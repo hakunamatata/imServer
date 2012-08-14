@@ -7,6 +7,7 @@ var express = require('express')
   , routes = require('./routes')
   , http = require('http')
   , mongojs = require('mongojs')
+  , RedisStore = require('connect-redis')(express)
   , cnnOption = {
       host: 'localhost',
       port: 27017,
@@ -28,6 +29,11 @@ app.configure(function () {
     app.use(express.favicon());
     app.use(express.logger('dev'));
     app.use(express.bodyParser());
+    app.use(express.session({
+    	secret:'_meta_imserver_',
+    	key:'express.sid',
+    	store:new RedisStore()
+    }));
     app.use(express.methodOverride());
     app.use(app.router);
     app.use(clientErrorHandler);

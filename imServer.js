@@ -52,16 +52,28 @@ app.configure('development', function () {
 *
 */
 
+
+
+/**
+* the im Server Page Route
+*/
+
 app.get('/', routes.ima.index);
 
 app.all('/login', routes.ima.login);
-//app.post('/login', routes.ima.login);
 
-app.all('/user', routes.ima.userIndex);
-
+app.all('/user',routes.ima.userAuthorize, routes.ima.userIndex);
 
 
 
+
+
+
+/**
+* the im Client Request Route
+*/
+
+app.post('/obtain', routes.imc.certVerify, routes.imc.responseHeader, routes.imc.obtain);
 
 
 
@@ -76,12 +88,8 @@ app.all('/user', routes.ima.userIndex);
 */
 app.post('/authorize', authorize, userAuthorizedCallback);
 
-/*
-* :class  , the category of document
-* :where  , the find condition
-* :select , the find selection
-*/
-app.post('/obtain', userObtainCallback)
+
+
 
 
 /*
@@ -97,20 +105,7 @@ function userAuthorizedCallback(req, res) {
 }
 
 function userObtainCallback(req, res) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.set('Content-Type', 'application/json');
 
-    var user = 'xymbtc_database',
-        collname = 'DefaultProject',
-        q = req.body,
-        where = q.where || {},
-        select = q.select || {};
-
-    db(user)
-        .collection(collname).find(where, select, function (err, docs) {
-            if (err) return next(new Error('error occured'));
-            res.send(200, docs);
-        });
 
 }
 

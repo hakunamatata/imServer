@@ -4,7 +4,8 @@
 * Module dependencies.
 */
 
-var db = require('../../lib/db');
+var db = require('../../lib/db'),
+	utils = require('../../lib/utils');
 
 
 /**
@@ -34,11 +35,14 @@ var ima = exports = module.exports = {
                         password = req.body.user.password;
 
             db()
-                .collection('users').find({ username: name, password: password }, function (err, docs) {
+                .collection('users').find({ 
+                	username: name, 
+                	password: password 
+                }, function (err, docs) {
                     if (!err) {
                         if (docs.length > 0) {
                             // authorize pass
-                            req.session.user = { username: name };
+                            req.session.user = { name: name };
                             res.redirect('/user');
                         }
                         else
@@ -48,8 +52,46 @@ var ima = exports = module.exports = {
         };
 
     },
-
+	
     userIndex: function (req, res) {
-        res.render('imadmin/home', { title: 'Welcome', user: req.session.user });
-    }
+    	switch(req.method){
+    		case 'GET':
+    			res.render('imadmin/home', { title: 'Welcome', user: req.session.user });
+    			break;
+    		
+    		case 'POST':
+    			var title = req.body.doc.title,
+        			collection = req.body.doc.collection,
+        			content = req.body.doc.content,
+        			// we need a function to generate database
+        			database = utils.getUserDatabase({
+        				pfix: 'xymbtc',
+        				nfix: 'database'
+        			});
+        		
+        		db(database)
+        			.collection('documents').insert({
+        				doc_title: title,
+        				doc_collection: collection,
+        				doc_content: content
+        			}, function(err){
+        				if(!err)
+        					res.redirect('/user')
+        				else
+        					res.send(500, 'save failed');
+        			});
+    				break;
+    	}
+    },
+    
+    
+    /**
+    * middleware : user authorize
+    */
+	userAuthorize:function(req, res, next){
+		if(req.session.user && req.session.user.name)
+			next();
+		else
+			next(new Error('user authorize failed'));
+	}
 }

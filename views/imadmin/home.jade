@@ -3,16 +3,18 @@ extends layout
 block content
 	p Welcome #{user.username}
 
-	p title:
-	input(type='text', value='')
-	br
+	form(action='/user', method='post')
+		// input(type='hidden', name='_method', value='delete')
+		p title:
+		input(type='text', value='', name='doc[title]')
+		br
 	
-	p category:
-	input(type='text', value='')
-	br
+		p category:
+		input(type='text', value='', name='doc[collection]')
+		br
 
-	p content:
-	textarea(cols='100', rows='40')
-	br
+		p content:
+		textarea(cols='100', rows='40', name='doc[content]')
+		br
 
-	input(type='submit', value='submit')
+		input(type='submit', value='submit')

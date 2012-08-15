@@ -77,47 +77,6 @@ app.post('/obtain', routes.imc.certVerify, routes.imc.responseHeader, routes.imc
 
 
 
-
-
-
-
-
-
-/*
-* 	user authorize
-*/
-app.post('/authorize', authorize, userAuthorizedCallback);
-
-
-
-
-
-/*
-*
-* 	ROUTERS Callback
-*
-*/
-
-function userAuthorizedCallback(req, res) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.set('Content-Type', 'application/json');
-    res.send(200, { text: 'access acquired' });
-}
-
-function userObtainCallback(req, res) {
-
-
-}
-
-
-
-/*
-*
-* 	MIDDLEWARES
-*
-/*
-
-
 /*
 *	clientError handle
 */
@@ -129,20 +88,3 @@ function clientErrorHandler(err, req, res, next) {
     else
         next(err);
 }
-
-/*
-*  user authorize middleware
-*/
-function authorize(req, res, next) {
-    if (!req.body) return next(new Error('params posted error.'));
-    // authorizing
-
-    db()
-        .collection('users').find({ username: req.body.username }, function (err, docs) {
-            if (err) return next(new Error('error occured.'));
-            if (!docs || docs.length == 0) return next(new Error('user not found.'));
-            if (docs[0].password != req.body.password) return next(new Error('password not matched.'));
-            // authorized
-            next();
-        });
-};

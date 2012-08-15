@@ -4,19 +4,15 @@
 */
 
 var express = require('express')
-  , routes = require('./routes')
   , http = require('http')
-  , mongojs = require('mongojs')
   , RedisStore = require('connect-redis')(express)
-  , cnnOption = {
-      host: 'localhost',
-      port: 27017,
-      username: '',
-      password: '',
-      db: 'IMJS'
-  };
+  , routes = require('./routes')
 
+  , db = require('./lib/db');
 
+/**
+* Application Start
+*/
 var app = express();
 app.listen(3000, 'localhost');
 console.log('ImServer is running at localhost:3000');
@@ -26,13 +22,16 @@ app.configure(function () {
     app.set('port', process.env.PORT || 3000);
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
+
     app.use(express.favicon());
-    app.use(express.logger('dev'));
+
+    //app.use(express.logger('dev'));
+
     app.use(express.bodyParser());
+    app.use(express.cookieParser());
     app.use(express.session({
-    	secret:'_meta_imserver_',
-    	key:'express.sid',
-    	store:new RedisStore()
+        secret: '_meta_imserver_',
+        store: new RedisStore
     }));
     app.use(express.methodOverride());
     app.use(app.router);
@@ -48,15 +47,33 @@ app.configure('development', function () {
 
 
 /*
- *
- * 	ROUTERS
- *
- */
+*
+* 	ROUTERS
+*
+*/
+
+app.get('/', routes.ima.index);
+
+app.all('/login', routes.ima.login);
+//app.post('/login', routes.ima.login);
+
+app.all('/user', routes.ima.userIndex);
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*
- * 	user authorize
- */
+* 	user authorize
+*/
 app.post('/authorize', authorize, userAuthorizedCallback);
 
 /*
@@ -64,15 +81,15 @@ app.post('/authorize', authorize, userAuthorizedCallback);
 * :where  , the find condition
 * :select , the find selection
 */
-app.post('/obtain', obtainPrepareDb, userObtainCallback)
+app.post('/obtain', userObtainCallback)
 
 
 /*
- *
- * 	ROUTERS Callback
- *
- */
- 
+*
+* 	ROUTERS Callback
+*
+*/
+
 function userAuthorizedCallback(req, res) {
     res.header('Access-Control-Allow-Origin', '*');
     res.set('Content-Type', 'application/json');
@@ -82,31 +99,33 @@ function userAuthorizedCallback(req, res) {
 function userObtainCallback(req, res) {
     res.header('Access-Control-Allow-Origin', '*');
     res.set('Content-Type', 'application/json');
-    var db = req.db,
+
+    var user = 'xymbtc_database',
         collname = 'DefaultProject',
         q = req.body,
         where = q.where || {},
         select = q.select || {};
 
-    db.collection(collname).find(where, select, function (err, docs) {
-        if (err) return next(new Error('error occured'));
-        res.send(200, docs);
-    });
+    db(user)
+        .collection(collname).find(where, select, function (err, docs) {
+            if (err) return next(new Error('error occured'));
+            res.send(200, docs);
+        });
 
 }
 
 
 
 /*
- *
- * 	MIDDLEWARES
- *
+*
+* 	MIDDLEWARES
+*
 /*
 
 
 /*
- *	clientError handle
- */ 
+*	clientError handle
+*/
 function clientErrorHandler(err, req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.set('Content-Type', 'application/json');
@@ -117,32 +136,18 @@ function clientErrorHandler(err, req, res, next) {
 }
 
 /*
- *  user authorize middleware
- */
+*  user authorize middleware
+*/
 function authorize(req, res, next) {
-	if(!req.body) return next(new Error('params posted error.'));
+    if (!req.body) return next(new Error('params posted error.'));
     // authorizing
-    var db = mongojs.connect(cnnOption);
-    db.collection('users').find({ username: req.body.username }, function (err, docs) {
-        if (err) return next(new Error('error occured.'));
-        if (!docs || docs.length == 0) return next(new Error('user not found.'));
-        if (docs[0].password != req.body.password) return next(new Error('password not matched.'));
-        next();
-    });
-};
 
-function obtainPrepareDb(req, res, next) {
-    if (!req.body) return next(new Error('params posted error'));
-    if (!req.body.class) req.body.class = 'collection'
-    var user = 'xymbtc' + '_database',
-        conn = {
-            host: cnnOption.host,
-            port: cnnOption.port,
-            username: cnnOption.username,
-            password: cnnOption.password,
-            db: user
-        },
-        db = mongojs.connect(conn);
-    req.db = db;
-    next();
-}
+    db()
+        .collection('users').find({ username: req.body.username }, function (err, docs) {
+            if (err) return next(new Error('error occured.'));
+            if (!docs || docs.length == 0) return next(new Error('user not found.'));
+            if (docs[0].password != req.body.password) return next(new Error('password not matched.'));
+            // authorized
+            next();
+        });
+};

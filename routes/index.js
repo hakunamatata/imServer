@@ -1,8 +1,10 @@
 
 /*
- * GET home page.
- */
+* im admin directory
+*/
 
-exports.index = function(req, res){
-  res.render('index', {title: 'microblog'});
-};
+var imadmin = require('./imadmin'),
+    imclient = require('./imclient');
+
+exports.ima = imadmin;
+exports.imc = imclient;

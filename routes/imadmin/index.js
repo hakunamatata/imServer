@@ -48,6 +48,8 @@ var ima = exports = module.exports = {
                 }
                 else
                     res.send(500, 'user dennied');
+                    
+                db.close();
             });
 
         };
@@ -84,6 +86,8 @@ var ima = exports = module.exports = {
                     }
                     else
                         res.send(500, 'save dennied');
+                        
+                    db.close();
 
                 })
                 break;

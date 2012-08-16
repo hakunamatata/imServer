@@ -6,9 +6,8 @@
 var express = require('express')
   , http = require('http')
   , RedisStore = require('connect-redis')(express)
-  , routes = require('./routes')
+  , routes = require('./routes');
 
-  , db = require('./lib/db');
 
 /**
 * Application Start
@@ -35,24 +34,17 @@ app.configure(function () {
     }));
     app.use(express.methodOverride());
     app.use(app.router);
-    app.use(clientErrorHandler);
     app.use(express.static(__dirname + '/public'));
 });
 
 app.configure('development', function () {
     app.use(express.errorHandler());
-
 });
 
 
-
 /*
-*
 * 	ROUTERS
-*
 */
-
-
 
 /**
 * the im Server Page Route
@@ -62,29 +54,10 @@ app.get('/', routes.ima.index);
 
 app.all('/login', routes.ima.login);
 
-app.all('/user',routes.ima.userAuthorize, routes.ima.userIndex);
-
-
-
-
-
+app.all('/user', routes.ima.userAuthorize, routes.ima.userIndex);
 
 /**
 * the im Client Request Route
 */
 
 app.post('/obtain', routes.imc.certVerify, routes.imc.responseHeader, routes.imc.obtain);
-
-
-
-/*
-*	clientError handle
-*/
-function clientErrorHandler(err, req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.set('Content-Type', 'application/json');
-    if (req.xhr)
-        res.send(500, err);
-    else
-        next(err);
-}

@@ -1,11 +1,11 @@
-
-
 /**
 * Module dependencies.
 */
 
-var db = require('../../lib/db'),
-	utils = require('../../lib/utils');
+var utils = require('../../lib/utils')
+  , schemas = require('../../lib/schema')
+  , mongodb = require('../../lib/database')
+
 
 
 /**
@@ -32,66 +32,73 @@ var ima = exports = module.exports = {
         } else {
             // POST Request
             var name = req.body.user.name,
-                        password = req.body.user.password;
+                password = req.body.user.password,
 
-            db()
-                .collection('users').find({ 
-                	username: name, 
-                	password: password 
-                }, function (err, docs) {
-                    if (!err) {
-                        if (docs.length > 0) {
-                            // authorize pass
-                            req.session.user = { name: name };
-                            res.redirect('/user');
-                        }
-                        else
-                            res.send(500, 'user dennied');
-                    }
-                })
+                db = mongodb.use(),
+                $users = db.model('users', schemas.users);
+
+            $users.find({ username: name, password: password }, function (err, users) {
+
+                if (!err) {
+                    if (users.length > 0) {
+                        req.session.user = { name: name };
+                        res.redirect('/user');
+                    } else
+                        res.send(500, 'user not found.');
+                }
+                else
+                    res.send(500, 'user dennied');
+            });
+
         };
 
     },
-	
+
     userIndex: function (req, res) {
-    	switch(req.method){
-    		case 'GET':
-    			res.render('imadmin/home', { title: 'Welcome', user: req.session.user });
-    			break;
-    		
-    		case 'POST':
-    			var title = req.body.doc.title,
-        			collection = req.body.doc.collection,
+        switch (req.method) {
+            case 'GET':
+                res.render('imadmin/home', { title: 'Welcome', user: req.session.user });
+                break;
+
+            case 'POST':
+                var title = req.body.doc.title,
+        			category = req.body.doc.collection,
         			content = req.body.doc.content,
-        			// we need a function to generate database
-        			database = utils.getUserDatabase({
-        				pfix: 'xymbtc',
-        				nfix: 'database'
-        			});
-        		
-        		db(database)
-        			.collection('documents').insert({
-        				doc_title: title,
-        				doc_collection: collection,
-        				doc_content: content
-        			}, function(err){
-        				if(!err)
-        					res.redirect('/user')
-        				else
-        					res.send(500, 'save failed');
-        			});
-    				break;
-    	}
+                // we need a function to generate database
+        			dbname = utils.getUserDatabase({
+        			    pfix: 'xymbtc',
+        			    nfix: 'database'
+        			}),
+
+        			db = mongodb.use(dbname),
+                    $documents = db.model('document', schemas.document),
+                    newDoc = new $documents({
+                        title: title,
+                        category: category,
+                        content: content
+                    });
+
+                newDoc.save(function (err, docs) {
+                    if (!err) {
+                        res.redirect('/user')
+                    }
+                    else
+                        res.send(500, 'save dennied');
+
+                })
+                break;
+        }
     },
-    
-    
+
+
     /**
     * middleware : user authorize
     */
-	userAuthorize:function(req, res, next){
-		if(req.session.user && req.session.user.name)
-			next();
-		else
-			next(new Error('user authorize failed'));
-	}
+    userAuthorize: function (req, res, next) {
+
+        if (req.session.user && req.session.user.name)
+            next();
+        else
+            next(new Error('user authorize failed'));
+    }
 }

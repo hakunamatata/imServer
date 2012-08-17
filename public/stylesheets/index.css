@@ -1,0 +1,40 @@
+body
+{
+    margin: 0;
+    font: 14px "Lucida Grande" , Helvetica, Arial, sans-serif;
+    background-image: url(images/nsbackground_light.png);
+}
+
+a
+{
+    color: #00B7FF;
+}
+
+
+
+#wrapper
+{
+    margin: 0;
+    display: -webkit-box;
+    -webkit-box-orient: horizontal;
+    -webkit-box-align: stretch;
+    -webkit-box-pack: left;
+    display: -moz-box;
+    -moz-box-orient: horizontal;
+    -moz-box-align: stretch;
+    -moz-box-pack: left;
+}
+
+
+
+
+
+#wrapper .sidebar
+{
+    margin: 0;
+    width: 220px;
+    -webkit-box-flex: 0;
+    -moz-box-flex: 0;
+    box-flex: 0;
+    background-image: url(images/nsbackground.png);
+}

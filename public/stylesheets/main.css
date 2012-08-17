@@ -1,0 +1,189 @@
+﻿
+/*design by:alice*/
+
+/*初始化*/
+html
+{
+    overflow-x: hidden;
+    height: 100%;
+    width: 100%;
+    background: url(images/nsbackground_light.png) repeat;
+}
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textarea, p, blockquote, th, td
+{
+    margin: 0;
+    padding: 0;
+}
+body, button, input, select, textarea
+{
+    font: 12px/1.5 tahoma,arial,\5b8b\4f53,sans-serif;
+}
+img
+{
+    border: none;
+}
+em, strong
+{
+    font-style: normal;
+    font-weight: normal;
+}
+ul, li, ol
+{
+    list-style: none;
+}
+table
+{
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+h1
+{
+    font-size: 18px;
+}
+h2
+{
+    font-size: 16px;
+}
+h3
+{
+    font-size: 14px;
+}
+h1, h2, h3, h4, h5, h6
+{
+    font-weight: bold;
+}
+h4, h5, h6
+{
+    font-size: 135%;
+}
+address, cite, dfn, em, var
+{
+    font-style: normal;
+}
+button, input, select, textarea
+{
+    font-size: 135%;
+}
+q:before, q:after
+{
+    content: '';
+}
+
+.cl
+{
+    clear: both;
+}
+a
+{
+    color: #72706f;
+    text-decoration: none;
+}
+a:hover
+{
+    color: #72706f;
+    text-decoration: underline;
+}
+p
+{
+    color: #72706f;
+}
+
+table
+{
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+td
+{
+    vertical-align: top;
+}
+
+
+body
+{
+    height: 100%;
+    width: 100%;
+ 
+}
+
+
+#main_box
+{
+    position: relative;
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    min-width: 1000px;
+    height: 100%;
+    min-height: 644px;
+}
+
+/* Panels de menu et de contenu */
+
+#left_box, .left_box
+{
+    position: relative;
+    display: table-cell;
+    z-index: 100;
+    width: 220px;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#right_box, .right_box
+{
+    position: relative;
+    display: table-cell;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+}
+
+
+/* Conteuneur */
+.left
+{
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 220px;
+    margin: 0;
+    padding: 0;
+    background: url(images/nsbackground.png) repeat;
+}
+.left ul
+{
+    padding-top: 100px;
+}
+.left ul li
+{
+    height: 100px;
+    width: 220px;
+    text-align: right;
+    line-height: 100px;
+    
+}
+.left ul li a
+{
+    font-family:\5FAE\8F6F\96C5\9ED1;
+    font-size: 30px;
+    color: #fff;
+    font-weight: bold;
+    margin-right: 20px;
+}
+.left ul li a:hover
+{
+    text-decoration: none;
+}
+.left ul .dif
+{
+    background: url(images/nsbackground_light.png) repeat;
+}
+.left ul .dif a
+{
+    color: #333;
+}

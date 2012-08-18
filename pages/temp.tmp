@@ -1,0 +1,2 @@
+<input type='button' value='新建文档' onclick="lastScrollWindow.create($('#textContent'))" />
+<input type='button' value='关闭' onclick='lastScrollWindow.close()' />

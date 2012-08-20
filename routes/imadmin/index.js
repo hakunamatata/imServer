@@ -48,7 +48,7 @@ var ima = exports = module.exports = {
                 }
                 else
                     res.send(500, 'user dennied');
-                    
+
                 db.close();
             });
 
@@ -57,40 +57,7 @@ var ima = exports = module.exports = {
     },
 
     userIndex: function (req, res) {
-        switch (req.method) {
-            case 'GET':
-                res.render('imadmin/home', { title: 'Welcome', user: req.session.user });
-                break;
-
-            case 'POST':
-                var title = req.body.doc.title,
-        			category = req.body.doc.collection,
-        			content = req.body.doc.content,
-                // we need a function to generate database
-        			dbname = utils.getUserDatabase({
-        			    pfix: 'xymbtc',
-        			    nfix: 'database'
-        			}),
-
-        			db = mongodb.use(dbname),
-                    $documents = db.model('document', schemas.document),
-                    newDoc = new $documents({
-                        title: title,
-                        category: category,
-                        content: content
-                    });
-
-                newDoc.save(function (err, docs) {
-                    if (!err) {
-                        res.redirect('/user')
-                    }
-                    else
-                        res.send(500, 'save dennied');
-                        
-                    db.close();
-
-                })
-                break;
+            res.send('Hello world.');
         }
     },
 
@@ -103,6 +70,6 @@ var ima = exports = module.exports = {
         if (req.session.user && req.session.user.name)
             next();
         else
-            next(new Error('user authorize failed'));
+            res.redirect('/login');
     }
 }

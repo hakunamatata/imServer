@@ -13,6 +13,9 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textar
 {
     margin: 0;
     padding: 0;
+    font-family: \5FAE\8F6F\96C5\9ED1;
+    color: #333;
+    text-shadow: 0 1px 1px #eee;
 }
 body, button, input, select, textarea
 {
@@ -38,7 +41,7 @@ table
 }
 h1
 {
-    font-size: 18px;
+    font-size: 30px;
 }
 h2
 {
@@ -103,7 +106,6 @@ body
 {
     height: 100%;
     width: 100%;
- 
 }
 
 
@@ -140,10 +142,10 @@ body
     margin: 0;
     padding: 0;
     vertical-align: top;
-    color:#000;
-    text-shadow:0 1px 0 #ddd;
-    font-size:14px;
-    letter-spacing:1px;
+    color: #000;
+    text-shadow: 0 1px 0 #ddd;
+    font-size: 14px;
+    letter-spacing: 1px;
 }
 
 
@@ -165,20 +167,19 @@ body
 }
 .left ul li
 {
-    height: 100px;
+    height: 75px;
     width: 220px;
     text-align: right;
-    line-height: 100px;
-    
+    line-height: 75px;
 }
 .left ul li a
 {
-    font-family:\5FAE\8F6F\96C5\9ED1;
-    font-size: 30px;
+    font-family: \5FAE\8F6F\96C5\9ED1;
+    font-size: 24px;
     color: #eee;
     font-weight: bold;
     margin-right: 20px;
-	text-shadow: 0 1px 1px #333;
+    text-shadow: 0 1px 1px #333;
 }
 .left ul li a:hover
 {
@@ -198,42 +199,82 @@ body
 
 
 
-
-
-
-.subwindow{
-	width:100%;
-	height:100%; 
-	float:right;
-	position:absolute;
-	z-index:10000;
-	margin:0;
-	top:0;
+.swContent
+{
+    width: 820px;
+    margin: 20px;
 }
 
-.subg{
-	color: white;
-	width:100%;
-	height:100%; 
-	background-color: #fff;
-	float:right;
-	position:relative;
-	margin:0;
-	top:0;
-	opacity: 0.3;
+.swContent .stBlock
+{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
 }
 
-.subwindow .submain{
-	width:100%;
-	height:100%; 
-	background-image:url(images/nsbackground_light.png); 
-	float:right;
-	position:absolute;
-	margin:0;
-	top:0;
-	-moz-box-shadow: -1px 0px 10px #666;
-	-webkit-box-shadow: -1px 0px 10px #666;
-	box-shadow:-1px 0px 10px #666;
-	opacity:0;
+.swContent .stBlock h2
+{
+    font-size: 14px;
+    color: #222;
+    text-align: left;
+    width: 150px;
+    float: left;
+}
 
+.swContent .stBlock .settings
+{
+    text-align: left;
+    color: #000;
+    width: 650px;
+    font-size: 12px;
+    float: left;
+}
+
+.subwindow
+{
+    width: 100%;
+    height: 100%;
+    float: right;
+    position: absolute;
+    z-index: 10000;
+    margin: 0;
+    top: 0;
+}
+
+.subg
+{
+    color: white;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    float: right;
+    position: relative;
+    margin: 0;
+    top: 0;
+    opacity: 0.1;
+    filter: alpha(opacity=10);
+}
+
+.subwindow .submain
+{
+    width: 100%;
+    height: 100%;
+    background-image: url(images/nsbackground_light.png);
+    float: right;
+    position: absolute;
+    margin: 0;
+    top: 0;
+    -moz-box-shadow: -1px 0px 20px #666;
+    -webkit-box-shadow: -1px 0px 20px #666;
+    box-shadow: -1px 0px 20px #666;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+.hr
+{
+    border-bottom: 1px solid #666;
+    -moz-box-shadow: 0 1px 0 #eee;
+    -webkit-box-shadow: 0 1px 0 #eee;
+    box-shadow: 0 1px 0 #eee;
 }

@@ -1,26 +1,31 @@
 
 
-(function ($, scope) { 
-    var grow_animate;    	
-    	
-    $.fn.grow = function(){
+(function ($, scope) {
+    var grow_animate,
+        options = {
+            scrollStep: 50,
+            animateDelay: 250,
+            scaleRate:1.5
+        }
+
+    $.fn.grow = function () {
         var oriSize = parseInt(this.css('fontSize').match(/[0-9]+/));
-        return this.each(function(i , e){
-            $(e).mouseover(grow_animate($(e), oriSize * 1.6, 'up')).mouseout(grow_animate($(e), oriSize, 'down' ));
+        return this.each(function (i, e) {
+            $(e).mouseover(grow_animate($(e), oriSize * options.scaleRate)).mouseout(grow_animate($(e), oriSize));
         });
     };
-            	
-    grow_animate = function(that, size, method){
-    	return function(){
-        	that.animate({
-            	fontSize: size
-            });
+
+    grow_animate = function (that, size) {
+        return function () {
+            that.animate({
+                fontSize: size
+            }, options.animateDelay);
         }
-	};
-			
-	
-	
-	var 
+    };
+
+
+
+    var 
     	Class,
     	swTemp = [
     		"<div class='subwindow'>",
@@ -32,20 +37,18 @@
     		"</div>"
     	].join(''),
     	submainContent,
-    	options = {
-    		scrollStep: 100
-    	}
-    	
-    	
+
+
+
 	Class = function (parent) {
 	    var klass = function () {
 	        this.init.apply(this, arguments);
 	    };
-		if(parent){
-			var subclass = function(){};
-			subclass.prototype = parent.prototype;
-			klass.prototype = new subclass;
-		};		
+	    if (parent) {
+	        var subclass = function () { };
+	        subclass.prototype = parent.prototype;
+	        klass.prototype = new subclass;
+	    };
 	    klass.prototype.init = function () { };
 	    klass.fn = klass.prototype;
 	    klass.fn.parent = klass;
@@ -58,83 +61,83 @@
 	    };
 	    return klass;
 	};
-	
-	var $scrollWindow = new Class;
-	
-	$scrollWindow.extend({
-	
-		init: function(that){
-			
-			if(typeof that === 'string'){
-			
-				this.context = $(that);
-			
-				this.context.attr('data-dep', 0);
-				
-				this.parentWindow = this;
-			
-			
-			} else {
-				
-				this.parentWindow = that;
 
-				var frame = $(swTemp),
+    var $scrollWindow = new Class;
+
+    $scrollWindow.extend({
+
+        init: function (that) {
+
+            if (typeof that === 'string') {
+
+                this.context = $(that);
+
+                this.context.attr('data-dep', 0);
+
+                this.parentWindow = this;
+
+
+            } else {
+
+                this.parentWindow = that;
+
+                var frame = $(swTemp),
 					submain = frame.find('.submain'),
 					parentDepth = this.parentWindow.depth();
-					submain.find('.submaincontent').html(submainContent);
-				frame[0].id=this.parentWindow.context.attr('id') + '_sub';
-				submain.css('margin-left', options.scrollStep * parentDepth);
-				frame.appendTo(this.parentWindow.context);
-				submain.animate({
-					'opacity': 1,
-					'margin-left': options.scrollStep * ++parentDepth
-				});
-				
-				this.context = frame;
-				
-				this.context.attr('data-dep', parentDepth)
+                submain.find('.submaincontent').html(submainContent);
+                frame[0].id = this.parentWindow.context.attr('id') + '_sub';
+                submain.css('margin-left', options.scrollStep * parentDepth);
+                frame.appendTo(this.parentWindow.context);
+                submain.animate({
+                    'opacity': 1,
+                    'margin-left': options.scrollStep * ++parentDepth
+                }, options.animateDelay);
 
-			}
-			
-			scope.lastScrollWindow = this;
-			
-		},
-		
-		create: function(opts){
-		
-			if(opts)
-				if(typeof opts[0] === 'undefined'){
-					$.get(opts.url, function(data){
-						submainContent = data;
-					});
-				} else {
-					submainContent = opts[0].innerHTML;
-				}
-			return new $scrollWindow(this);
-		},
-		
-		close: function(){
-			
-			var that = this,
+                this.context = frame;
+
+                this.context.attr('data-dep', parentDepth)
+
+            }
+
+            scope.lastScrollWindow = this;
+
+        },
+
+        create: function (opts) {
+
+            if (opts)
+                if (typeof opts[0] === 'undefined') {
+                    $.get(opts.url, function (data) {
+                        submainContent = data;
+                    });
+                } else {
+                    submainContent = opts[0].innerHTML;
+                }
+            return new $scrollWindow(this);
+        },
+
+        close: function () {
+
+            var that = this,
 				sub_main = that.context.find('.submain');
-				sub_main.animate({
-					'opacity': 0,
-					'margin-left': this.parentWindow.depth() * options.scrollStep
-				},500, function(){
-					that.context.remove();
-					delete that;
-				});
-				
-			scope.lastScrollWindow = this.parentWindow;
-		},
-		
-		depth: function(){
-			return parseInt(this.context.attr('data-dep'));
-		}
-	});
-		
-	scope.scrollWindow = $scrollWindow;
-			
+            sub_main.animate({
+                'opacity': 0,
+                'margin-left': this.parentWindow.depth() * options.scrollStep
+            }, options.animateDelay, function () {
+                that.context.remove();
+                delete that;
+            });
+
+            scope.lastScrollWindow = this.parentWindow;
+        },
+
+        depth: function () {
+            return parseInt(this.context.attr('data-dep'));
+        }
+    });
+
+    scope.scrollWindow = $scrollWindow;
+
 })(jQuery, window);
 
 

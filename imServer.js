@@ -54,7 +54,9 @@ app.get('/', routes.ima.index);
 
 app.all('/login', routes.ima.login);
 
-app.all('/user', routes.ima.userAuthorize, routes.ima.userIndex);
+app.get('/user', routes.ima.userAuthorize, routes.ima.userIndex);
+
+app.get('/user/:query', routes.ima.userAuthorize);
 
 /**
 * the im Client Request Route

@@ -3,7 +3,7 @@
 (function ($, scope) {
     var grow_animate,
         options = {
-            scrollStep: 50,
+            scrollStep: 80,
             animateDelay: 250,
             scaleRate:1.5
         }
@@ -22,6 +22,29 @@
             }, options.animateDelay);
         }
     };
+    
+    var clearSelect;
+    $.fn.asMenu = function(){
+    	var that = this;
+    	this.click(function(){
+    		var temp = $(this).attr('data-jade');
+    		clearSelect(that);
+    		$(this.parentNode).addClass('dif');
+    		if(temp){
+    			mainScrollWindow.render({
+    				url:'/jade/imadmin/' + temp + '.jade'
+    			});
+    		};
+    	});
+    	
+    }
+    
+    clearSelect = function(that){
+    	that.each(function(){
+    		$(this.parentNode).removeClass('dif');
+    	});
+    }
+    
 
 
 
@@ -31,7 +54,6 @@
     		"<div class='subwindow'>",
     			"<div class='subg' onclick='lastScrollWindow.close()'></div>",
     			"<div class='submain'>",
-    				"<span onclick='lastScrollWindow.create()'>x</span>",
 					"<div class='submaincontent'></div>",
     			"</div>",
     		"</div>"
@@ -76,7 +98,8 @@
 
                 this.parentWindow = this;
 
-
+				scope.mainScrollWindow = this;
+				
             } else {
 
                 this.parentWindow = that;
@@ -133,6 +156,18 @@
 
         depth: function () {
             return parseInt(this.context.attr('data-dep'));
+        },
+        
+        render: function(opts){
+        	var context = this.context[0];
+         	if (opts)
+                if (typeof opts[0] === 'undefined') {
+                    $.get(opts.url, function (data) {
+                        $(context).find('.submaincontent').html(data);
+                    });
+                } else {
+                   $(context).find('.submaincontent').html(opts[0].innerHTML);
+                }
         }
     });
 
@@ -141,4 +176,10 @@
 })(jQuery, window);
 
 
-
+$(document).ready(function(){
+	$('li a').grow().asMenu();
+    var main = new scrollWindow('.ScrollWindowMain');
+    $('input:button').click(function () {
+    	lastScrollWindow.create();
+        });
+});

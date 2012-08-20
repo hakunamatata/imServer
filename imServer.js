@@ -52,11 +52,21 @@ app.configure('development', function () {
 
 app.get('/', routes.ima.index);
 
-app.all('/login', routes.ima.login);
+app.get('/login', routes.ima.login);
+
+app.post('/login', routes.ima.userExist, routes.ima.login);
+
+app.post('/register', routes.ima.userExist, routes.ima.register);
 
 app.get('/user', routes.ima.userAuthorize, routes.ima.userIndex);
 
 app.get('/user/:query', routes.ima.userAuthorize);
+
+/*	获取模板	*/
+app.get('/jade/imadmin/:jname.jade', function(req, res){
+	var jname = req.params.jname;
+	res.render('imadmin/'+jname+'.jade');
+});
 
 /**
 * the im Client Request Route

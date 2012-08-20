@@ -1,0 +1,30 @@
+h1 文档
+.hr
+.stBlock	
+	h2 增加文档
+	.settings
+		p 如果要增加一篇文档，请点击这里
+		input(type='button', value='增加文档', onclick='lastScrollWindow.create()')
+
+	.stBlock
+		h2 所有文档
+		.settings
+			p 以下是您xxx项目中所有文档， 您可以对他们进行排序和编辑
+			.comment(style='width:500px')
+				table.projTable
+					tr
+						td(width='200px') 项目名称
+						td 创建日期
+						td 认证码
+						td 默认
+					tr
+						td a
+						td b
+						td c
+						td d
+						
+	.stBlock
+		h2 删除文档 
+		.settings
+			p 文档删除不可以恢复， 请把获取到的文档编号填入下面的文本框，然后点击删除。
+			input(type='button', value='删除这篇文档')

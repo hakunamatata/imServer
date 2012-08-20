@@ -1,20 +1,53 @@
 extends layout
 
 block content
-	p Welcome #{user.username}
-
-	form(action='/user', method='post')
-		// input(type='hidden', name='_method', value='delete')
-		p title:
-		input(type='text', value='', name='doc[title]')
-		br
-	
-		p category:
-		input(type='text', value='', name='doc[collection]')
-		br
-
-		p content:
-		textarea(cols='100', rows='40', name='doc[content]')
-		br
-
-		input(type='submit', value='submit')
+	#main_box.wrapper
+		#left_box
+			.left
+				ul 
+					li.dif
+						a(href='javascript:void(0)', data-jade='sets') 设置
+					li
+						a(href='javascript:void(0)', data-jade='docs') 文档
+					
+		#right_box.ScrollWindowMain
+			.swContent.submaincontent
+				h1 设置
+				.hr
+				.stBlock	
+					h2 登陆状态
+					.settings
+						p 您已经登陆IM, 若要注销或者退出，请点击
+						input(type='button', value='退出账号')
+						input(type='button', value='切换账号')
+				.stBlock
+					h2 账号
+					.settings
+						p 邮箱是您登陆IM的唯一途经，证书是您使用IM的必要条件，为了保证您正常使用IM，请保管您的账号:
+						.comment
+							|登陆邮箱 xymbtc@163.com 
+							br
+							|证书 cerJermNiKmne
+						br
+						p 修改密码时，我们会向您登陆邮箱发送一封电子邮件，里面包含密码修改的链接，点击之后跟着步骤操作即可。
+						input(type='button', value='给我发送修改密码的邮件')
+						
+				.stBlock
+					h2 项目 
+					.settings
+						p 以下是您的项目，您可以设置其中一个为默认项目，下次登陆时将默认对这个项目进行操作。
+						.comment(style='width:500px')
+							table.projTable
+								tr
+									td(width='200px') 项目名称
+									td 创建日期
+									td 认证码
+									td 默认
+								tr
+									td a
+									td b
+									td c
+									td d
+						p 添加项目请点击这里
+						input(type='button', value='创建新项目')
+						

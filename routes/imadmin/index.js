@@ -41,7 +41,7 @@ var ima = exports = module.exports = {
                     db.close();
                     if (!err) {
                         if (users.length > 0) {
-                            req.session.user = { name: name };
+                            req.session.user = { name: name, usercert:users[0].usercert };
                             res.redirect('/user');
                         } else {
                             res.send('password not matched! ');
@@ -85,6 +85,43 @@ var ima = exports = module.exports = {
                 res.send('用户已存在');
             }
         }
+    },
+    /**
+    *	用户发布文章	
+    */
+    postDoc: function(req, res){
+    	var q = req.body,
+    		ur = req.session.user,
+    		projcert = 'PROJCERT',
+    		db = mongodb.use(utils.getUserDatabase({
+    			pfix: ur.usercert,
+    			nfix: projcert
+    		})),
+    		$document = db.model('document', schemas.document);
+    		
+    		doc = new $document({
+    			title: q.title,
+    			category: q.category,
+    			content: q.content,
+    			publishDate: Date.now(),
+    			hits: 0		
+    		});
+    		
+    		doc.save(function(err){
+    			if (!err){
+    				res.send({
+    					value: true,
+    					text: '保存成功。'
+    				});
+    				db.close();
+    			} else {
+    				res.send({
+    					value: false,
+    					text: '保存失败。'
+    				});
+    				db.close();
+    			}
+    		});
     },
 
     userIndex: function (req, res) {

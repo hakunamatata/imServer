@@ -60,7 +60,11 @@ app.post('/register', routes.ima.userExist, routes.ima.register);
 
 app.get('/user', routes.ima.userAuthorize, routes.ima.userIndex);
 
-app.get('/user/:query', routes.ima.userAuthorize);
+app.post('/user/addoc', routes.ima.userAuthorize, routes.ima.postDoc);
+
+
+
+
 
 /*	获取模板	*/
 app.get('/jade/imadmin/:jname.jade', function (req, res) {

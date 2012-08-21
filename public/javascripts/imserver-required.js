@@ -200,6 +200,34 @@
     scope.scrollWindow = $scrollWindow;
 
 
+/**
+*
+*	用户页面基本操作
+*
+*/
+
+	var userInterface = {
+			
+			documentPublish: function(){
+				var title = $('#title').val(),
+					category = $('#category').val(),
+					content = $('#myEditor').val();
+				
+				
+				$.post('/user/addoc',{
+					title: title,
+					category: category,
+					content: content
+				}, function(data){
+					if (data.value)
+						alert(data.text);
+				});
+			}
+			
+			
+		}
+	scope.userInterface = userInterface;
+	
 })(jQuery, window);
 
 

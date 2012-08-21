@@ -1,0 +1,33 @@
+.swContent
+	h1 添加文档
+	.hr
+	.stBlock	
+		h2 标题
+		.settings
+			p 在下面的文本框中输入文档标题。
+			input(type='text')
+						
+	.stBlock
+		h2 内容 
+		.settings
+			p 请输入文档内容
+			.comment(style='width:850px')
+				#myEditor 
+				|<script type='text/javascript'> var editor = new UE.ui.Editor(); editor.render('myEditor');</script>
+
+	.stBlock
+		h2 栏目
+		.settings
+			p 文档栏目可以对文档进行分类，请选择文档栏目。
+			input(type='text')
+
+	.stBlock
+		h2 标签
+		.settings
+			p 标签是文档的索引，方便日后对文档的搜索。
+			input(type='text')
+			
+	.stBlock
+		h2 发布
+		.settings
+			input(type='button', value='点击发布')

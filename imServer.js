@@ -63,9 +63,13 @@ app.get('/user', routes.ima.userAuthorize, routes.ima.userIndex);
 app.get('/user/:query', routes.ima.userAuthorize);
 
 /*	获取模板	*/
-app.get('/jade/imadmin/:jname.jade', function(req, res){
-	var jname = req.params.jname;
-	res.render('imadmin/'+jname+'.jade');
+app.get('/jade/imadmin/:jname.jade', function (req, res) {
+    var jname = req.params.jname;
+    res.render('imadmin/' + jname + '.jade');
+});
+
+app.get('/ueditor/', function (req, res) {
+    res.render('index.jade');
 });
 
 /**

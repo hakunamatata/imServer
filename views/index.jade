@@ -1,6 +1,14 @@
-extends layout
-
-block content
-	- var foo = '<h2>bar</h2>'
-	!= foo
-	h1= foo
+!!!
+html
+	head
+		meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
+		title Editor
+		
+		script(type='text/javascript', src='editor_config.js')
+		script(type='text/javascript', src='editor_all.js')
+		link(rel='stylesheet', href='themes/default/ueditor.css')
+		
+	body
+		#myEditor
+			|<script type='text/javascript'> ; editor.render('myEditor');</script>
+		

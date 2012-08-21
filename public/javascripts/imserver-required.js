@@ -5,11 +5,11 @@
         options = {
             scrollStep: 80,
             animateDelay: 250,
-            scaleRate:1.5
+            scaleRate: 1.5
         }
 
     $.fn.grow = function () {
-        var oriSize = parseInt(this.css('fontSize').match(/[0-9]+/));
+        var oriSize = parseInt(this.css('fontSize'));
         return this.each(function (i, e) {
             $(e).mouseover(grow_animate($(e), oriSize * options.scaleRate)).mouseout(grow_animate($(e), oriSize));
         });
@@ -22,29 +22,34 @@
             }, options.animateDelay);
         }
     };
-    
+
     var clearSelect;
-    $.fn.asMenu = function(){
-    	var that = this;
-    	this.click(function(){
-    		var temp = $(this).attr('data-jade');
-    		clearSelect(that);
-    		$(this.parentNode).addClass('dif');
-    		if(temp){
-    			mainScrollWindow.render({
-    				url:'/jade/imadmin/' + temp + '.jade'
-    			});
-    		};
-    	});
-    	
+    $.fn.asMenu = function () {
+        var that = this;
+        this.click(function () {
+            var temp = $(this).attr('data-jade'),
+                cName = $(this)[0].className;
+
+            if (!cName) {
+                clearSelect(that);
+                $(this.parentNode).addClass('dif');
+                if (temp) {
+                    mainScrollWindow.render({
+                        url: '/jade/imadmin/' + temp + '.jade'
+                    });
+                }
+            };
+        });
+
     }
-    
-    clearSelect = function(that){
-    	that.each(function(){
-    		$(this.parentNode).removeClass('dif');
-    	});
+
+    clearSelect = function (that) {
+        lastScrollWindow.removeAll();
+        that.each(function () {
+            $(this.parentNode).removeClass('dif');
+        });
     }
-    
+
 
 
 
@@ -98,8 +103,10 @@
 
                 this.parentWindow = this;
 
-				scope.mainScrollWindow = this;
-				
+                this.id = 'mainWindow';
+
+                scope.mainScrollWindow = this;
+
             } else {
 
                 this.parentWindow = that;
@@ -108,7 +115,9 @@
 					submain = frame.find('.submain'),
 					parentDepth = this.parentWindow.depth();
                 submain.find('.submaincontent').html(submainContent);
+
                 frame[0].id = this.parentWindow.context.attr('id') + '_sub';
+                this.id = this.parentWindow.id + "_sub";
                 submain.css('margin-left', options.scrollStep * parentDepth);
                 frame.appendTo(this.parentWindow.context);
                 submain.animate({
@@ -127,16 +136,18 @@
         },
 
         create: function (opts) {
-
+            var that = this;
             if (opts)
                 if (typeof opts[0] === 'undefined') {
                     $.get(opts.url, function (data) {
                         submainContent = data;
+                        return new $scrollWindow(that);
                     });
                 } else {
                     submainContent = opts[0].innerHTML;
+                    return new $scrollWindow(that);
                 }
-            return new $scrollWindow(this);
+
         },
 
         close: function () {
@@ -147,8 +158,7 @@
                 'opacity': 0,
                 'margin-left': this.parentWindow.depth() * options.scrollStep
             }, options.animateDelay, function () {
-                that.context.remove();
-                delete that;
+                that.remove();
             });
 
             scope.lastScrollWindow = this.parentWindow;
@@ -157,29 +167,43 @@
         depth: function () {
             return parseInt(this.context.attr('data-dep'));
         },
-        
-        render: function(opts){
-        	var context = this.context[0];
-         	if (opts)
+
+        render: function (opts) {
+            var context = this.context[0];
+            if (opts)
                 if (typeof opts[0] === 'undefined') {
                     $.get(opts.url, function (data) {
                         $(context).find('.submaincontent').html(data);
                     });
                 } else {
-                   $(context).find('.submaincontent').html(opts[0].innerHTML);
+                    $(context).find('.submaincontent').html(opts[0].innerHTML);
                 }
+        },
+        remove: function () {
+            lastScrollWindow = this.parentWindow;
+            this.context.remove();
+            delete this;
+        },
+
+        removeAll: function () {
+            var that = this;
+            while (that.id != 'mainWindow') {
+                console.log(this);
+
+                that.remove();
+                that = that.parentWindow;
+            };
+            console.log(lastScrollWindow);
         }
     });
 
     scope.scrollWindow = $scrollWindow;
 
+
 })(jQuery, window);
 
 
-$(document).ready(function(){
-	$('li a').grow().asMenu();
+$(document).ready(function () {
+    $('li a').grow().asMenu();
     var main = new scrollWindow('.ScrollWindowMain');
-    $('input:button').click(function () {
-    	lastScrollWindow.create();
-        });
 });

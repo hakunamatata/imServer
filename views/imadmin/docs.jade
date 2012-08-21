@@ -4,7 +4,7 @@ h1 文档
 	h2 增加文档
 	.settings
 		p 如果要增加一篇文档，请点击这里
-		input(type='button', value='增加文档', onclick='lastScrollWindow.create()')
+		input(type='button', value='增加文档', onclick="lastScrollWindow.create({url:'/jade/imadmin/add_doc.jade'}); ")
 
 	.stBlock
 		h2 所有文档
@@ -22,7 +22,6 @@ h1 文档
 						td b
 						td c
 						td d
-						
 	.stBlock
 		h2 删除文档 
 		.settings

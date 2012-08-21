@@ -4,21 +4,20 @@
 /*初始化*/
 html
 {
+    overflow-y: hidden;
     overflow-x: hidden;
     height: 100%;
     width: 100%;
     background: url(images/nsbackground_light.png) repeat;
 }
-body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textarea, p, blockquote, th, td
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, p, blockquote, th, td
 {
     margin: 0;
     padding: 0;
     font-family: \5FAE\8F6F\96C5\9ED1;
+    
 }
-body, button, input, select, textarea
-{
-    font: 12px/1.5 tahoma,arial,\5b8b\4f53,sans-serif;
-}
+
 img
 {
     border: none;
@@ -36,6 +35,7 @@ ul, li, ol
 h1
 {
     font-size: 30px;
+    color: #222;
 }
 h2
 {
@@ -48,6 +48,7 @@ h3
 h1, h2, h3, h4, h5, h6
 {
     font-weight: bold;
+    text-shadow: 0 1px 0 #ddd;
 }
 h4, h5, h6
 {
@@ -56,10 +57,6 @@ h4, h5, h6
 address, cite, dfn, em, var
 {
     font-style: normal;
-}
-button, input, select, textarea
-{
-    font-size: 135%;
 }
 q:before, q:after
 {
@@ -101,7 +98,7 @@ body
     table-layout: fixed;
     width: 100%;
     min-width: 1000px;
-    height: 100%;
+    height: 1000px;
     min-height: 644px;
 }
 
@@ -122,15 +119,17 @@ body
 {
     position: relative;
     display: table-cell;
-    height: 100%;
+    height: 1000px;
     width: 100%;
     margin: 0;
     padding: 0;
     vertical-align: top;
     color: #000;
-    text-shadow: 0 1px 0 #ddd;
+    text-shadow: 0 1px 0 #ccc;
     font-size: 14px;
     letter-spacing: 1px;
+    overflow-y:scroll;
+    overflow-x:hidden;
 }
 
 
@@ -197,13 +196,18 @@ body
     width: 100%;
 }
 
+.swContent .stBlock .userEditor
+{
+    width: 600px;
+}
+
+
 .swContent .stBlock h2
 {
     font-size: 16px;
     color: #222;
     text-align: left;
     width: 150px;
-
 }
 
 .swContent .stBlock .settings
@@ -212,37 +216,73 @@ body
     color: #000;
     width: 650px;
     font-size: 14px;
-    margin-left:25px;
-    margin-top:10px;
-
+    margin-left: 25px;
+    margin-top: 10px;
 }
 
-.swContent .stBlock .settings .comment{
-	background-color: #768794;
-	text-shadow: 1px 1px 1px black;
-	color: white;
-	border-color: #3f3f3f;
-	border-style: solid;
-	border-width: 1px;
-	width:380px;
-	border-radius:5px;
-	padding:10px;
-	margin:5px;
-
-	
+.swContent .stBlock .settings .comment
+{
+    background-color: #768794;
+    text-shadow: 1px 1px 1px black;
+    color: white;
+    border-color: #3f3f3f;
+    border-style: solid;
+    border-width: 1px;
+    width: 380px;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px;
 }
 
- .projTable{
-	width:100%;
-	
-	color: white;
-		border: 1px;
-	text-shadow: 1px 1px 1px black;
+.projTable
+{
+    width: 100%;
+    color: white;
+    border: 1px;
+    text-shadow: none;
 }
 .swContent .stBlock .settings p
 {
-	width: 450px;
+    width: 450px;
 }
+
+
+.swContent .stBlock input
+{
+    border: 1px solid #3f3f3f;
+    background-color: #768794;
+    color: White;
+    font-size: 12px;
+    border-radius: 5px;
+    padding: 2px;
+}
+.swContent .stBlock input:hover
+{
+    text-shadow: 1px 1px 1px black;
+}
+.swContent .stBlock input:active
+{
+    text-shadow: 1px 1px 1px white;
+    color: #213245;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .subwindow
 {
@@ -250,7 +290,7 @@ body
     height: 100%;
     float: right;
     position: absolute;
-    z-index: 10000;
+    z-index: 100;
     margin: 0;
     top: 0;
 }
@@ -283,6 +323,39 @@ body
     box-shadow: -1px 0px 20px #666;
     opacity: 0;
     filter: alpha(opacity=0);
+}
+
+
+.subwindow .close
+{
+    border: none;
+    color: Black;
+    font-size:20px;
+    border-radius: 5px;
+    padding: 2px;
+    font-weight:500;
+    cursor: pointer;
+    position: fixed;
+    top: 20px;
+}
+.subwindow .close:hover
+{
+    text-shadow: 1px 1px 1px black;
+    color:White;
+}
+.subwindow .close:active
+{
+    text-shadow: 1px 1px 1px white;
+    color: #213245;
+}
+
+
+
+
+.subwindow .close
+{
+    font-size: 16px;
+    color: #768794;
 }
 
 .hr

@@ -210,14 +210,15 @@
 			
 			documentPublish: function(){
 				var title = $('#title').val(),
-					category = $('#category').val(),
-					content = $('#myEditor').val();
-				
+					category = $('#category').val();
+					
+					if(!editor)  throw "文档编辑器('Ueditor')加载失败" ;
+
 				
 				$.post('/user/addoc',{
 					title: title,
 					category: category,
-					content: content
+					content: editor.getContent()
 				}, function(data){
 					if (data.value)
 						alert(data.text);

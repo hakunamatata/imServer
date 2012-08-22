@@ -193,42 +193,49 @@
                 that.remove();
                 that = that.parentWindow;
             };
-            console.log(lastScrollWindow);
         }
     });
 
     scope.scrollWindow = $scrollWindow;
 
 
-/**
-*
-*	用户页面基本操作
-*
-*/
+    /**
+    *
+    *	用户页面基本操作
+    *
+    */
 
-	var userInterface = {
-			
-			documentPublish: function(){
-				var title = $('#title').val(),
-					category = $('#category').val();
-					
-					if(!editor)  throw "文档编辑器('Ueditor')加载失败" ;
+    var userInterface = {
 
-				
-				$.post('/user/addoc',{
-					title: title,
-					category: category,
-					content: editor.getContent()
-				}, function(data){
-					if (data.value)
-						alert(data.text);
-				});
-			}
-			
-			
-		}
-	scope.userInterface = userInterface;
-	
+        documentPublish: function () {
+            var title = $('#title').val(),
+				category = $('#category').val();
+
+            if (!editor) throw "文档编辑器('Ueditor')加载失败";
+
+            $.post('/user/addoc', {
+                title: title,
+                category: category,
+                content: editor.getContent()
+            }, function (res) {
+                if (!res.err) {
+                    alert(res.responseText);
+                }
+            });
+        },
+
+        exit: function () {
+            location.href = '/exit';
+        },
+
+        logout: function () {
+            location.href = '/logout';
+        }
+
+
+    }
+    scope.userInterface = userInterface;
+
 })(jQuery, window);
 
 

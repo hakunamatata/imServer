@@ -42,6 +42,17 @@ app.configure('development', function () {
 });
 
 
+
+
+/**
+*   中间件
+*/
+
+var userAuthAndDataBase = [
+          routes.ima.userAuthorize  // 用户验证
+        , routes.ima.useDataBase // 用户数据库选择
+    ];
+
 /*
 * 	ROUTERS
 */
@@ -49,6 +60,8 @@ app.configure('development', function () {
 /**
 * the im Server Page Route
 */
+
+
 
 app.get('/', routes.ima.index);
 
@@ -60,16 +73,28 @@ app.post('/register', routes.ima.userExist, routes.ima.register);
 
 app.get('/user', routes.ima.userAuthorize, routes.ima.userIndex);
 
-app.post('/user/addoc', routes.ima.userAuthorize, routes.ima.postDoc);
+app.get('/logout', function (req, res) { delete req.session.destroy(); res.redirect('/login') });
+app.get('/exit', function (req, res) { delete req.session.destroy(); res.redirect('/') });
+
+/**
+* 用户提交操作
+*/
+app.post('/user/addoc', userAuthAndDataBase, routes.ima.postDoc);
+app.post('/user/addProject', userAuthAndDataBase, routes.ima.postProject);
 
 
 
 
 
 /*	获取模板	*/
-app.get('/jade/imadmin/:jname.jade', function (req, res) {
+app.get('/jade/imadmin/:jname.jade', routes.ima.userAuthorize, function (req, res) {
     var jname = req.params.jname;
-    res.render('imadmin/' + jname + '.jade');
+    var response = {
+        title: '设置',
+        user: req.session.user
+    };
+
+    res.render('imadmin/' + jname + '.jade', response);
 });
 
 app.get('/ueditor/', function (req, res) {

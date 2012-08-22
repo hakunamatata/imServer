@@ -1,53 +1,43 @@
-extends layout
-
-block content
-	#main_box.wrapper
-		#left_box
-			.left
-				ul 
-					li.dif
-						a(href='javascript:void(0)', data-jade='sets') è®¾ç½®
-					li
-						a(href='javascript:void(0)', data-jade='docs') æ–‡æ¡£
-					
-		#right_box.ScrollWindowMain
-			.swContent.submaincontent
-				h1 è®¾ç½®
-				.hr
-				.stBlock	
-					h2 ç™»é™†çŠ¶æ€
-					.settings
-						p æ‚¨å·²ç»ç™»é™†IM, è‹¥è¦æ³¨é”€æˆ–è€…é€€å‡ºï¼Œè¯·ç‚¹å‡»
-						input(type='button', value='é€€å‡ºè´¦å·')
-						input(type='button', value='åˆ‡æ¢è´¦å·')
-				.stBlock
-					h2 è´¦å·
-					.settings
-						p é‚®ç®±æ˜¯æ‚¨ç™»é™†IMçš„å”¯ä¸€é€”ç»ï¼Œè¯ä¹¦æ˜¯æ‚¨ä½¿ç”¨IMçš„å¿…è¦æ¡ä»¶ï¼Œä¸ºäº†ä¿è¯æ‚¨æ­£å¸¸ä½¿ç”¨IMï¼Œè¯·ä¿ç®¡æ‚¨çš„è´¦å·:
-						.comment
-							|ç™»é™†é‚®ç®± xymbtc@163.com 
-							br
-							|è¯ä¹¦ cerJermNiKmne
-						br
-						p ä¿®æ”¹å¯†ç æ—¶ï¼Œæˆ‘ä»¬ä¼šå‘æ‚¨ç™»é™†é‚®ç®±å‘é€ä¸€å°ç”µå­é‚®ä»¶ï¼Œé‡Œé¢åŒ…å«å¯†ç ä¿®æ”¹çš„é“¾æ¥ï¼Œç‚¹å‡»ä¹‹åè·Ÿç€æ­¥éª¤æ“ä½œå³å¯ã€‚
-						input(type='button', value='ç»™æˆ‘å‘é€ä¿®æ”¹å¯†ç çš„é‚®ä»¶')
+extends tmp_head
+block menu_option
+	h1 ÉèÖÃ
+	.hr
+	.stBlock	
+		h2 µÇÂ½×´Ì¬
+		.settings
+			p ÄúÒÑ¾­µÇÂ½IM, ÈôÒª×¢Ïú»òÕßÍË³ö£¬Çëµã»÷
+			input(type='button', value='ÍË³öÕËºÅ', onclick='userInterface.exit()')
+			input(type='button', value='ÇĞ»»ÕËºÅ', onclick='userInterface.logout()')
+	.stBlock
+		h2 ÕËºÅ
+		.settings
+			p ÓÊÏäÊÇÄúµÇÂ½IMµÄÎ¨Ò»Í¾¾­£¬Ö¤ÊéÊÇÄúÊ¹ÓÃIMµÄ±ØÒªÌõ¼ş£¬ÎªÁË±£Ö¤ÄúÕı³£Ê¹ÓÃIM£¬Çë±£¹ÜÄúµÄÕËºÅ:
+			.comment
+				|µÇÂ½ÓÊÏä #{user.username}
+				br
+				|Ö¤Êé #{user.userCert}
+			br
+			p ĞŞ¸ÄÃÜÂëÊ±£¬ÎÒÃÇ»áÏòÄúµÇÂ½ÓÊÏä·¢ËÍÒ»·âµç×ÓÓÊ¼ş£¬ÀïÃæ°üº¬ÃÜÂëĞŞ¸ÄµÄÁ´½Ó£¬µã»÷Ö®ºó¸ú×Å²½Öè²Ù×÷¼´¿É¡£
+			input(type='button', value='¸øÎÒ·¢ËÍĞŞ¸ÄÃÜÂëµÄÓÊ¼ş')
 						
-				.stBlock
-					h2 é¡¹ç›® 
-					.settings
-						p ä»¥ä¸‹æ˜¯æ‚¨çš„é¡¹ç›®ï¼Œæ‚¨å¯ä»¥è®¾ç½®å…¶ä¸­ä¸€ä¸ªä¸ºé»˜è®¤é¡¹ç›®ï¼Œä¸‹æ¬¡ç™»é™†æ—¶å°†é»˜è®¤å¯¹è¿™ä¸ªé¡¹ç›®è¿›è¡Œæ“ä½œã€‚
-						.comment(style='width:500px')
-							table.projTable
-								tr
-									td(width='200px') é¡¹ç›®åç§°
-									td åˆ›å»ºæ—¥æœŸ
-									td è®¤è¯ç 
-									td é»˜è®¤
-								tr
-									td a
-									td b
-									td c
-									td d
-						p æ·»åŠ é¡¹ç›®è¯·ç‚¹å‡»è¿™é‡Œ
-						input(type='button', value='åˆ›å»ºæ–°é¡¹ç›®')
-						
+	.stBlock
+		h2 ÏîÄ¿ 
+		.settings
+			p ÒÔÏÂÊÇÄúµÄÏîÄ¿£¬Äú¿ÉÒÔÉèÖÃÆäÖĞÒ»¸öÎªÄ¬ÈÏÏîÄ¿£¬ÏÂ´ÎµÇÂ½Ê±½«Ä¬ÈÏ¶ÔÕâ¸öÏîÄ¿½øĞĞ²Ù×÷¡£
+			.comment(style='width:500px')
+				if (user.project.length == 0)
+					|Äú»¹Ã»ÓĞÌí¼ÓÈÎºÎÏîÄ¿
+				else
+					table.projTable
+						tr
+							td(width='200px') ÏîÄ¿Ãû³Æ
+							td ´´½¨ÈÕÆÚ
+							td ÈÏÖ¤Âë
+							td Ä¬ÈÏ
+						tr
+							td a
+							td b
+							td c
+							td d
+			p Ìí¼ÓÏîÄ¿Çëµã»÷ÕâÀï
+			input(type='button', value='´´½¨ĞÂÏîÄ¿')

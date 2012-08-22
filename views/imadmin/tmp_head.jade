@@ -1,0 +1,25 @@
+doctype 5
+html
+	head
+		title= title
+		meta(http-equiv='Content-Type', content='text/html;charset=gb2312')
+		link(rel='stylesheet', href='/stylesheets/main.css')
+		script(type='text/javascript', src='/javascripts/jquery.js')
+		script(type='text/javascript', src='/javascripts/imserver-required.js')
+		script(type='text/javascript', src='/ueditor/editor_config.js')
+		script(type='text/javascript', src='/ueditor/editor_all.js')
+		link(rel='stylesheet', href='/ueditor/themes/default/ueditor.css')
+
+	body
+		#main_box.wrapper
+			#left_box
+				.left
+					ul 
+						li.dif
+							a(href='javascript:void(0)', data-jade='sets') …Ë÷√
+						li
+							a(href='javascript:void(0)', data-jade='docs') Œƒµµ
+					
+			#right_box.ScrollWindowMain
+				.swContent.submaincontent
+					block menu_option

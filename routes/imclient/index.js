@@ -28,7 +28,7 @@ var imb = exports = module.exports = {
             where = q.where || {},
             select = q.select || {},
 
-            dbname = utils.getUserDatabase({ pfix: q.cert, nfix: q.proj }),
+            dbname = utils.getUserDatabase(req),
             db = mongodb.use(dbname),
             $documents = db.model(q.type, schemas.document);
 

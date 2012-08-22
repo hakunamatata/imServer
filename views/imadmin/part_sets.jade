@@ -38,4 +38,7 @@ h1 设置
 						td c
 						td d
 		p 添加项目请点击这里
-		input(type='button', value='创建新项目')
+		div.inputbutton
+			input(type='text', id='projectName')
+			input(type='button', value='创建新项目', onclick="userInterface.inputButtonCall(this, 'projectPost')")
+			input(type='button', value='创建新项目', onclick='userInterface.projectPost()',style='display:none')

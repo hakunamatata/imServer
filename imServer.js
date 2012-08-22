@@ -91,7 +91,8 @@ app.get('/jade/imadmin/:jname.jade', routes.ima.userAuthorize, function (req, re
     var jname = req.params.jname;
     var response = {
         title: '设置',
-        user: req.session.user
+        user: req.session.user,
+        callback: function(){ userInterface.init() }
     };
 
     res.render('imadmin/' + jname + '.jade', response);

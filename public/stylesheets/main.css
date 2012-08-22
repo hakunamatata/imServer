@@ -365,3 +365,8 @@ body
     -webkit-box-shadow: 0 1px 0 #eee;
     box-shadow: 0 1px 0 #eee;
 }
+
+.inputbutton input[type=text]{
+	display:none;
+	width:1px;
+}

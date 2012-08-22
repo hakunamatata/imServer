@@ -109,7 +109,6 @@ var utils = require('../../lib/utils')
       postDoc: function (req, res) {
           var q = req.body,
     		ur = req.session.user,
-    		projcert = 'PROJCERT',
     		db = mongodb.use(req.dbString);
 
           $document = db.model('document', schemas.document),
@@ -150,6 +149,36 @@ var utils = require('../../lib/utils')
           };
 
           res.render('imadmin/home', response);
+      },
+      
+      postProject: function(req, res){
+      	var q = req.body,
+      		ur = req.session.user,
+      		db = mongodb.use(),
+      		
+      		$user = db.model('user', schemas.user);
+      		$user.findByIdAndUpdate( ur._id , {
+      			$addToSet:{
+      					project:{
+      						projName: q.projName,
+      						projCert: utils.md5(q.projName),
+      						projCreateDate: Date.now(),
+      						projDefault: false
+      					}
+      			}
+      		}, function(err){
+      			if (err)
+      				res.send({
+      					err: true,
+      					responseText: err.err
+      				});
+      			else
+      				res.send({
+      					err: false,
+      					responseText:'数据更新成功。'
+      				});
+      			db.close();
+      		});
       },
 
 

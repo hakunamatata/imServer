@@ -51,7 +51,14 @@ app.configure('development', function () {
 var userAuthAndDataBase = [
           routes.ima.userAuthorize  // 用户验证
         , routes.ima.useDataBase // 用户数据库选择
-    ];
+    ],
+    
+    generateUserAndDoc = [
+    	routes.ima.userAuthorize  // 用户验证
+      , routes.ima.useDataBase // 用户数据库选择
+      , routes.ima.generateUser
+      ,	routes.ima.generateDoc
+    ]
 
 /*
 * 	ROUTERS
@@ -63,7 +70,7 @@ var userAuthAndDataBase = [
 
 
 
-app.get('/', routes.ima.index);
+app.get('/' , routes.ima.userAuthorize, routes.ima.index);
 
 app.get('/login', routes.ima.login);
 
@@ -81,13 +88,10 @@ app.get('/exit', function (req, res) { delete req.session.destroy(); res.redirec
 */
 app.post('/user/addoc', userAuthAndDataBase, routes.ima.postDoc);
 app.post('/user/addProject', userAuthAndDataBase, routes.ima.postProject);
-app.post('/user/setDefaultProject', userAuthAndDataBase, routes.ima.setDefaultProject);
 
+app.get('/user/getdocuments',userAuthAndDataBase, routes.ima.getDoc );
 
-
-
-/*	获取模板	*/
-app.get('/jade/imadmin/:jname.jade', routes.ima.userAuthorize, routes.ima.postTemple);
+app.get('/jade/imadmin/:jname.jade', generateUserAndDoc, routes.ima.postTemple);
 
 app.get('/ueditor/', function (req, res) {
     res.render('index.jade');

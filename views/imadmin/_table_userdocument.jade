@@ -1,0 +1,15 @@
+if ( docs.length == 0)
+	|您还没有添加任何文档
+else
+	table
+		thead
+			th 文档标题
+			th 文档类别
+			th 发布日期
+		tbody
+		each doc in docs
+			tr
+				td #{doc.title}
+				td #{doc.category}
+				td #{doc.publishDate}
+				

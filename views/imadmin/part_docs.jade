@@ -10,18 +10,8 @@ h1 文档
 		h2 所有文档
 		.settings
 			p 以下是您xxx项目中所有文档， 您可以对他们进行排序和编辑
-			.comment(style='width:500px')
-				table.projTable
-					tr
-						td(width='200px') 项目名称
-						td 创建日期
-						td 认证码
-						td 默认
-					tr
-						td a
-						td b
-						td c
-						td d
+			#documentTable.comment(style='width:500px')
+				include _table_userdocument.jade
 	.stBlock
 		h2 删除文档 
 		.settings

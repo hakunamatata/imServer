@@ -288,7 +288,8 @@
         },
 
         documentPublish: function () {
-            var title = $('#title').val(),
+            var that = this,
+            	title = $('#title').val(),
 				category = $('#category').val();
 
             if (!editor) throw "文档编辑器('Ueditor')加载失败";
@@ -298,9 +299,10 @@
                 category: category,
                 content: editor.getContent()
             }, function (res) {
-                if (!res.err) {
-                    alert(res.responseText);
-                }
+                    if(!res.err){
+                    	lastScrollWindow.remove();
+                    	that.getDocuments();
+                    }
             });
         },
 
@@ -309,26 +311,13 @@
             $.post('/user/addProject', {
                 projName: $('#projectName').val()
             }, function (res) {
-                if (!res.err) {
-                    that.projectReload();
-                };
-
+                $('#projectTable').html(res);
             })
         },
-
-        setDefaultProject: function () {
-            var that = this;
-            console.log($('.projTable').table2Json());
-            $.post('/user/setDefaultProject', {
-                project: $('.projTable').table2Json()
-            }, function (res) {
-                that.projectReload();
-            })
-        },
-
-        projectReload: function () {
-            $.get('/jade/imadmin/_userprojectable.jade', function (temp) {
-                $('#projectTable').html(temp);
+        
+        getDocuments: function(){
+        	 $.get('/user/getdocuments', function (temp) {
+                $('#documentTable').html(temp);
             })
         },
 

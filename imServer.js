@@ -81,22 +81,13 @@ app.get('/exit', function (req, res) { delete req.session.destroy(); res.redirec
 */
 app.post('/user/addoc', userAuthAndDataBase, routes.ima.postDoc);
 app.post('/user/addProject', userAuthAndDataBase, routes.ima.postProject);
-
+app.post('/user/setDefaultProject', userAuthAndDataBase, routes.ima.setDefaultProject);
 
 
 
 
 /*	获取模板	*/
-app.get('/jade/imadmin/:jname.jade', routes.ima.userAuthorize, function (req, res) {
-    var jname = req.params.jname;
-    var response = {
-        title: '设置',
-        user: req.session.user,
-        callback: function(){ userInterface.init() }
-    };
-
-    res.render('imadmin/' + jname + '.jade', response);
-});
+app.get('/jade/imadmin/:jname.jade', routes.ima.userAuthorize, routes.ima.postTemple);
 
 app.get('/ueditor/', function (req, res) {
     res.render('index.jade');
@@ -107,3 +98,4 @@ app.get('/ueditor/', function (req, res) {
 */
 
 app.post('/obtain', routes.imc.certVerify, routes.imc.responseHeader, routes.imc.obtain);
+

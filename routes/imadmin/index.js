@@ -140,47 +140,124 @@ var utils = require('../../lib/utils')
           });
       },
 
+//      getDoc: function (req, res) {
+//          var q = req.body,
+//    		ur = req.session.user,
+//    		db = mongodb.use(req.dbString);
+
+//          db.model('document', schemas.document).find(function (err, docs) {
+//              if (err)
+//                  res.send({
+//                      err: true,
+//                      responseText: err.err
+//                  });
+//              else {
+//                  ur.docs = docs;
+//                  res.render('_userdocumenttable.jade', ur);
+//              }
+//              db.close();
+
+//          })
+//      },
+
       userIndex: function (req, res) {
 
           // 组织用户数据
-          var response = {
-              title: '设置',
-              user: req.session.user
-          };
+          var ur = req.session.user,
+            db = mongodb.use();
 
-          res.render('imadmin/home', response);
+          db.model('users', schemas.user).findById(ur._id, function (err, user) {
+              if (err)
+                  res.send('user not found.');
+              else {
+                  res.render('imadmin/home', {
+                      title: '设置',
+                      user: user
+                  });
+              }
+              db.close();
+          });
       },
-      
-      postProject: function(req, res){
-      	var q = req.body,
+
+      postProject: function (req, res) {
+          var q = req.body,
       		ur = req.session.user,
-      		db = mongodb.use(),
-      		
-      		$user = db.model('user', schemas.user);
-      		$user.findByIdAndUpdate( ur._id , {
-      			$addToSet:{
-      					project:{
-      						projName: q.projName,
-      						projCert: utils.md5(q.projName),
-      						projCreateDate: Date.now(),
-      						projDefault: false
-      					}
-      			}
-      		}, function(err){
-      			if (err)
-      				res.send({
-      					err: true,
-      					responseText: err.err
-      				});
-      			else
-      				res.send({
-      					err: false,
-      					responseText:'数据更新成功。'
-      				});
-      			db.close();
-      		});
+      		db = mongodb.use();
+
+          $user = db.model('user', schemas.user).findByIdAndUpdate(ur._id, {
+              $addToSet: {
+                  project: {
+                      projName: q.projName,
+                      projCert: utils.md5(q.projName),
+                      projCreateDate: Date.now(),
+                      projDefault: false
+                  }
+              }
+          }, function (err, user) {
+              if (err)
+                  res.send({
+                      err: true,
+                      responseText: err.err
+                  });
+              else {
+                  res.send({
+                      err: false,
+                      responseText: '数据更新成功。'
+                  });
+              }
+              db.close();
+          });
       },
 
+      setDefaultProject: function (req, res) {
+          var q = req.body,
+      		ur = req.session.user,
+      		db = mongodb.use();
+
+          console.log(req.body.project);
+
+          db.model('user', schemas.user).findByIdAndUpdate(ur._id, {
+              $set: {
+                  project: req.body.project
+              }
+          }, function (err, user) {
+              if (err)
+                  res.send({
+                      err: true,
+                      responseText: err.err
+                  });
+              else {
+                  res.send({
+                      err: false,
+                      responseText: '数据更新成功。'
+                  });
+              }
+              db.close();
+          })
+      },
+
+      postTemple: function (req, res) {
+          var jname = req.params.jname,
+              ur = req.session.user,
+              db = mongodb.use();
+
+          db.model('user', schemas.user).findById(ur._id, function (err, user) {
+
+              console.log(user);
+
+              if (err)
+                  res.send({
+                      err: true,
+                      responseText: err.err
+                  });
+              else {
+                  res.render('imadmin/' + jname + '.jade', {
+                      user: user
+                  });
+              }
+              db.close();
+          });
+      },
 
       /**
       * middleware : user authorize

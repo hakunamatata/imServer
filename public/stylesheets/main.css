@@ -4,7 +4,6 @@
 /*初始化*/
 html
 {
-    overflow-y: hidden;
     overflow-x: hidden;
     height: 100%;
     width: 100%;
@@ -128,8 +127,6 @@ body
     text-shadow: 0 1px 0 #ccc;
     font-size: 14px;
     letter-spacing: 1px;
-    overflow-y:scroll;
-    overflow-x:hidden;
 }
 
 

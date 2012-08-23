@@ -22,21 +22,8 @@ h1 设置
 	h2 项目 
 	.settings
 		p 以下是您的项目，您可以设置其中一个为默认项目，下次登陆时将默认对这个项目进行操作。
-		.comment(style='width:500px')
-			if (user.project.length == 0)
-				|您还没有添加任何项目
-			else
-				table.projTable
-					tr
-						td(width='200px') 项目名称
-						td 创建日期
-						td 认证码
-						td 默认
-					tr
-						td a
-						td b
-						td c
-						td d
+		#projectTable.comment(style='width:500px')
+			include _userprojectable.jade
 		p 添加项目请点击这里
 		div.inputbutton
 			input(type='text', id='projectName')

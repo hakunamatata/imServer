@@ -6,6 +6,7 @@ else
 			th 项目名称
 			th 创建日期
 			th 默认
+			th 加密
 		tbody
 		each proj in user.project
 			tr
@@ -17,4 +18,5 @@ else
 						input(type='radio', checked)
 					else
 						input(type='radio')
+				td #{proj.projCert}
 				

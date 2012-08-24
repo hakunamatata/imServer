@@ -28,8 +28,9 @@ var imb = exports = module.exports = {
             where = q.where || {},
             select = q.select || {},
 
-            dbname = utils.getUserDatabase(req),
-            db = mongodb.use(dbname),
+
+
+            db = mongodb.use(req.dbString),
             $documents = db.model(q.type, schemas.document);
 
         $documents.find(where, select, function (err, docs) {

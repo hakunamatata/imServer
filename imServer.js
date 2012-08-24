@@ -102,5 +102,5 @@ app.get('/ueditor/', function (req, res) {
 * the im Client Request Route
 */
 
-app.post('/obtain', routes.imc.certVerify, routes.imc.responseHeader, routes.imc.obtain);
+app.post('/obtain', routes.imc.certVerify, routes.ima.useDataBase, routes.imc.responseHeader, routes.imc.obtain);
 

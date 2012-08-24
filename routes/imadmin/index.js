@@ -110,10 +110,9 @@ var utils = require('../../lib/utils')
       postDoc: function (req, res) {
           var q = req.body,
     		ur = req.session.user,
-    		db = mongodb.use(req.dbString);
-
-          $document = db.model('document', schemas.document),
-
+    		db = mongodb.use(req.dbString),
+            $document = db.model('document', schemas.document),
+            $category = db.model('category', schemas.category),
             doc = new $document({
                 title: q.title,
                 category: q.category,
@@ -121,21 +120,25 @@ var utils = require('../../lib/utils')
                 publishDate: Date.now(),
                 hits: 0
             }),
+            category = new $category({
+                parent: null,
+                name: q.category
+            });
 
           // 返回值
-            response = {
-                err: false,
-                responseText: '',
-                callback: null
-            };
+          response = {
+              err: false,
+              responseText: '',
+              callback: null
+          };
 
+          category.save();
           doc.save(function (err, docs) {
               if (!err) {
-              console.log(docs);
-              	 res.send({
-              	 	err: false,
-              	 	responseText: 'request processed.'
-              	 });
+                  res.send({
+                      err: false,
+                      responseText: 'request processed.'
+                  });
               }
               db.close();
           });
@@ -147,8 +150,8 @@ var utils = require('../../lib/utils')
     		db = mongodb.use(req.dbString);
 
           db.model('document', schemas.document).find(function (err, docs) {
-              if (!err){
-                  res.render('imadmin/_table_userdocument', {docs: docs});
+              if (!err) {
+                  res.render('imadmin/_table_userdocument', { docs: docs });
               }
               db.close();
 
@@ -189,46 +192,62 @@ var utils = require('../../lib/utils')
                   }
               }
           }, function (err, user) {
-              if (!err){
-              	  res.render('imadmin/_table_userproject', {user: user});
+              if (!err) {
+                  res.render('imadmin/_table_userproject', { user: user });
               }
               db.close();
           });
       },
 
-      setDefaultProject: function (req, res) {
+      projectDefault: function (req, res, next) {
           var q = req.body,
-      		ur = req.session.user,
-      		db = mongodb.use();
-      		
-          db.model('user', schemas.user).findByIdAndUpdate(ur._id, {
-              $set: {
-                  project: req.body.project
-              }
-          }, function (err, user) {
-              if (err)
-                  res.send({
-                      err: true,
-                      responseText: err.err
+      		  ur = req.session.user,
+      		  db = mongodb.use(),
+              $user = db.model('user', schemas.user);
+          $user.findById(ur._id, function (err, user) {
+
+              if (!err) {
+                  _.each(user.project, function (v) {
+                      if (q.projName == v.projName) v.projDefault = true;
+                      else v.projDefault = false;
                   });
-              else {
-                  res.send({
-                      err: false,
-                      responseText: '数据更新成功。'
-                  });
+                  // 保存在请求中
+                  req.project = user.project;
+                  next();
+              } else {
+                  next(new Error('设置用户默认设备时， 未找到该用户。'));
               }
+
               db.close();
           })
       },
 
-	  postTemple: function (req, res) {
-	  	      	var jname = req.params.jname;
-				res.render('imadmin/' + jname + '.jade', {
-					user: req.renderUser,
-					docs: req.renderDoc
- 				});
+      projectDefaultSave: function (req, res) {
+          var ur = req.session.user,
+            db = mongodb.use(),
+            $user = db.model('user', schemas.user);
 
- 	  },
+          $user.update({ _id: ur._id }, { $set: { project: req.project} }, function (err) {
+              if (!err) {
+                  ur.project = req.project;
+                  res.render('imadmin/_table_userproject', { user: {
+                      project: req.project
+                  }
+                  });
+              }
+              db.close();
+          })
+
+      },
+
+      postTemple: function (req, res) {
+          var jname = req.params.jname;
+          res.render('imadmin/' + jname + '.jade', {
+              user: req.renderUser,
+              docs: req.renderDoc
+          });
+
+      },
       /**
       * middleware : user authorize
       */
@@ -257,29 +276,30 @@ var utils = require('../../lib/utils')
               }
           });
       },
-      
-      generateUser: function(req, res , next){
-      	var ur = req.session.user,
+
+      generateUser: function (req, res, next) {
+          var ur = req.session.user,
 			db = mongodb.use();
-		db.model('user', schemas.user).findById(ur._id, function (err, user) {
-			if(!err){
-				req.renderUser = user;
-				next();
- 			};
- 			db.close();
- 		});
+          db.model('user', schemas.user).findById(ur._id, function (err, user) {
+              if (!err) {
+                  var defaultProject = _.find(user.project, function (v) { return v.projDefault });
+                  user.defaultProject = defaultProject || { projName: 'Default Project' };
+                  req.renderUser = user;
+                  next();
+              };
+              db.close();
+          });
       },
-      
-      generateDoc: function(req, res, next){
-      	var db = mongodb.use(req.dbString);
-		db.model('document', schemas.document).find(function (err, docs) {
-			if(!err){
-				req.renderDoc = docs;
-				console.log(docs);
-				next();
- 			};
- 			db.close();
- 		});
+
+      generateDoc: function (req, res, next) {
+          var db = mongodb.use(req.dbString);
+          db.model('document', schemas.document).find(function (err, docs) {
+              if (!err) {
+                  req.renderDoc = docs;
+                  next();
+              };
+              db.close();
+          });
       },
 
       useDataBase: function (req, res, next) {

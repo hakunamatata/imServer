@@ -1,7 +1,7 @@
 if (user.project.length == 0)
 	|您还没有添加任何文档
 else
-	table.projectTable
+	table(style='width:100%')
 		thead
 			th 项目名称
 			th 创建日期
@@ -9,7 +9,12 @@ else
 		tbody
 		each proj in user.project
 			tr
-				td #{proj.projName}
-				td #{proj.projCreateDate}
-				td #{proj.projDefault}
+				td 
+					.projectName #{proj.projName}
+				td #{new Date(proj.projCreateDate).toYMD()}
+				td( onclick='userInterface.projectDefault(this)')
+					if ( proj.projDefault )
+						input(type='radio', checked)
+					else
+						input(type='radio')
 				

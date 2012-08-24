@@ -50,71 +50,71 @@
         });
     }
 
-    /**
-    *   表单转为JSON
-    */
-    var sequ;
-    $.fn.table2Json = function () {
-        var th = this.find('th'),
-            properties = sequ(th),
+    //    /**
+    //    *   表单转为JSON
+    //    */
+    //    var sequ;
+    //    $.fn.table2Json = function () {
+    //        var th = this.find('th'),
+    //            properties = sequ(th),
 
-            tr = this.find('tr'),
-            serial = [];
+    //            tr = this.find('tr'),
+    //            serial = [];
 
-        for (var i = 1; i < tr.length; i++) {
-            var obj = {},
-                td = $(tr[i]).find('td');
-            for (var j = 0; j < td.length; j++) {
-                var str;
-                switch (properties[j].ctrl) {
-                    case 'radio':
-                        str = $(td[j]).find('input:radio')[0].checked
-                        break;
-                    default:
-                        str = $(td[j]).text();
-                        break;
-                }
+    //        for (var i = 1; i < tr.length; i++) {
+    //            var obj = {},
+    //                td = $(tr[i]).find('td');
+    //            for (var j = 0; j < td.length; j++) {
+    //                var str;
+    //                switch (properties[j].ctrl) {
+    //                    case 'radio':
+    //                        str = $(td[j]).find('input:radio')[0].checked
+    //                        break;
+    //                    default:
+    //                        str = $(td[j]).text();
+    //                        break;
+    //                }
 
-                // type 类型可能有：String, Number, Date, Boolean, Float
-                switch (properties[j].type) {
-                    case 'String':
-                        obj[properties[j].prop] = str;
-                        break;
+    //                // type 类型可能有：String, Number, Date, Boolean, Float
+    //                switch (properties[j].type) {
+    //                    case 'String':
+    //                        obj[properties[j].prop] = str;
+    //                        break;
 
-                    case 'Number':
-                        obj[properties[j].prop] = parseInt(str);
-                        break;
+    //                    case 'Number':
+    //                        obj[properties[j].prop] = parseInt(str);
+    //                        break;
 
-                    case 'Float':
-                        obj[properties[j].prop] = parseFloat(str);
-                        break;
+    //                    case 'Float':
+    //                        obj[properties[j].prop] = parseFloat(str);
+    //                        break;
 
-                    case 'Boolean':
-                        obj[properties[j].prop] = str === 'true' ? true : str === 'false' ? false : Boolean(str);
-                        break;
+    //                    case 'Boolean':
+    //                        obj[properties[j].prop] = str === 'true' ? true : str === 'false' ? false : Boolean(str);
+    //                        break;
 
-                    case 'Date':
-                        obj[properties[j].prop] = new Date(parseInt(str));
-                        break;
-                }
-            }
-            serial.splice(i - 1, 1, obj);
-        }
-        return serial;
-    };
+    //                    case 'Date':
+    //                        obj[properties[j].prop] = new Date(parseInt(str));
+    //                        break;
+    //                }
+    //            }
+    //            serial.splice(i - 1, 1, obj);
+    //        }
+    //        return serial;
+    //    };
 
 
-    sequ = function (that) {
-        var q = [];
-        that.each(function (i, e) {
-            q.splice(i, 1, {
-                prop: $(e).attr('data-name'),
-                type: $(e).attr('data-type'),
-                ctrl: $(e).attr('data-ctrl')
-            });
-        });
-        return q;
-    };
+    //    sequ = function (that) {
+    //        var q = [];
+    //        that.each(function (i, e) {
+    //            q.splice(i, 1, {
+    //                prop: $(e).attr('data-name'),
+    //                type: $(e).attr('data-type'),
+    //                ctrl: $(e).attr('data-ctrl')
+    //            });
+    //        });
+    //        return q;
+    //    };
 
     var 
     Class,
@@ -282,11 +282,13 @@
 
     var userInterface = {
 
+        // 初始化
         init: function () {
             var menus = $('li a').grow().asMenu();
             $(menus[0]).click();
         },
 
+        // 发布文档
         documentPublish: function () {
             var that = this,
             	title = $('#title').val(),
@@ -299,13 +301,14 @@
                 category: category,
                 content: editor.getContent()
             }, function (res) {
-                    if(!res.err){
-                    	lastScrollWindow.remove();
-                    	that.getDocuments();
-                    }
+                if (!res.err) {
+                    lastScrollWindow.remove();
+                    that.getDocuments();
+                }
             });
         },
 
+        // 添加项目
         projectPost: function () {
             var that = this;
             $.post('/user/addProject', {
@@ -314,9 +317,19 @@
                 $('#projectTable').html(res);
             })
         },
-        
-        getDocuments: function(){
-        	 $.get('/user/getdocuments', function (temp) {
+
+        projectDefault: function (that) {
+            var text = $('.projectName', $(that).parent()).text();
+            $.post('/user/projectDefault', {
+                projName: text
+            }, function (res) {
+                $('#projectTable').html(res);
+            })
+        },
+
+        // 获取文档
+        getDocuments: function () {
+            $.get('/user/getdocuments', function (temp) {
                 $('#documentTable').html(temp);
             })
         },
@@ -330,8 +343,7 @@
         },
 
         inputButtonCall: function (that, callback) {
-            var script = new Function('userInterface.' + callback),
-        		text = $($(that).siblings()[0]);
+            var text = $($(that).siblings()[0]);
             button = $($(that).siblings()[1]);
 
             text.show();

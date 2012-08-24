@@ -1,7 +1,7 @@
 if ( docs.length == 0)
 	|您还没有添加任何文档
 else
-	table
+	table(style='width:100%')
 		thead
 			th 文档标题
 			th 文档类别
@@ -11,5 +11,5 @@ else
 			tr
 				td #{doc.title}
 				td #{doc.category}
-				td #{doc.publishDate}
+				td #{new Date(doc.publishDate).toYMD()}
 				

@@ -7,6 +7,7 @@ var express = require('express')
   , http = require('http')
   , RedisStore = require('connect-redis')(express)
   , routes = require('./routes');
+require('date-utils');
 
 
 /**
@@ -52,12 +53,12 @@ var userAuthAndDataBase = [
           routes.ima.userAuthorize  // 用户验证
         , routes.ima.useDataBase // 用户数据库选择
     ],
-    
+
     generateUserAndDoc = [
     	routes.ima.userAuthorize  // 用户验证
       , routes.ima.useDataBase // 用户数据库选择
       , routes.ima.generateUser
-      ,	routes.ima.generateDoc
+      , routes.ima.generateDoc
     ]
 
 /*
@@ -70,7 +71,7 @@ var userAuthAndDataBase = [
 
 
 
-app.get('/' , routes.ima.userAuthorize, routes.ima.index);
+app.get('/', routes.ima.userAuthorize, routes.ima.index);
 
 app.get('/login', routes.ima.login);
 
@@ -88,8 +89,8 @@ app.get('/exit', function (req, res) { delete req.session.destroy(); res.redirec
 */
 app.post('/user/addoc', userAuthAndDataBase, routes.ima.postDoc);
 app.post('/user/addProject', userAuthAndDataBase, routes.ima.postProject);
-
-app.get('/user/getdocuments',userAuthAndDataBase, routes.ima.getDoc );
+app.post('/user/projectDefault', userAuthAndDataBase, routes.ima.projectDefault, routes.ima.projectDefaultSave);
+app.get('/user/getdocuments', userAuthAndDataBase, routes.ima.getDoc);
 
 app.get('/jade/imadmin/:jname.jade', generateUserAndDoc, routes.ima.postTemple);
 
